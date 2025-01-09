@@ -61,7 +61,7 @@ To configure the New Relic agent and database connections, set the following env
 ## Notes
 
 * Ensure that the PostgreSQL databases are accessible from the container's network
-* The New Relic license key must remain confidential; avoid sharing it in public repositories
+* The New Relic license key and DB urls must remain confidential; avoid sharing them in public repositories
 
 ## License
 
