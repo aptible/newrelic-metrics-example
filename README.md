@@ -33,7 +33,7 @@ To configure the New Relic agent and database connections, set the following env
   postgresql://user1:password1@db1.example.com:5432/database1,postgresql://user2:password2@db2.example.com:5432/database2
   ```
 
-## Usage
+## Local Usage
 
 1. Clone this repository:
    ```bash
@@ -58,10 +58,43 @@ To configure the New Relic agent and database connections, set the following env
               newrelic-metrics-example
    ```
 
+## Using with Aptible
+
+Follow these steps to deploy the New Relic metrics agent on Aptible:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/newrelic-metrics-example.git
+   cd newrelic-metrics-example
+   ```
+
+2. Create a new Aptible app (`newrelic-metrics` is just a sample name used in this example):
+   ```bash
+   aptible apps:create newrelic-metrics
+   ```
+
+3. Add Aptible as a remote:
+   ```bash
+   git remote add aptible git@beta.aptible.com:app-name/newrelic-metrics.git
+   ```
+
+4. Configure the app environment:
+   ```bash
+   aptible config:set --app newrelic-metrics \
+     NEW_RELIC_ENV_LABEL=production \
+     NEW_RELIC_LICENSE_KEY=your-license-key \
+     PSQL_URLS=your-database-urls
+   ```
+
+5. Deploy to Aptible:
+   ```bash
+   git push aptible main
+   ```
+
 ## Notes
 
 * Ensure that the PostgreSQL databases are accessible from the container's network
-* The New Relic license key and DB urls must remain confidential; avoid sharing them in public repositories
+* The New Relic license key and database urls must remain confidential; avoid sharing them in public repositories
 
 ## License
 
