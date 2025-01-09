@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+cd /usr/yml && erb newrelic-infra-template.yml.erb > /etc/newrelic-infra.yml
+cd /usr/yml && erb postgresql-config.yml.erb > /etc/newrelic-infra/integrations.d/postgresql-config.yml
+
+exec /usr/bin/newrelic-infra-service "$@"
