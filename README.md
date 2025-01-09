@@ -78,7 +78,7 @@ Follow these steps to deploy the New Relic metrics agent on Aptible:
    git remote add aptible git@beta.aptible.com:app-name/newrelic-metrics.git
    ```
 
-4. Configure the app environment:
+4. Configure the app environment, substituting your own values below:
    ```bash
    aptible config:set --app newrelic-metrics \
      NEW_RELIC_ENV_LABEL=production \
