@@ -64,7 +64,7 @@ Follow these steps to deploy the New Relic metrics agent on Aptible:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/newrelic-metrics-example.git
+   git clone https://github.com/aptible/newrelic-metrics-example.git
    cd newrelic-metrics-example
    ```
 
