@@ -2,35 +2,23 @@
 integrations:
 <% config_entries = ENV['PSQL_URLS'].to_s.split(',') %>
 <% config_entries.each do |entry| %>
-  <% begin %>
-    <% fragments = entry.split('|') %>
-    <% raise 'Invalid format: Missing fragments in entry. See README.' if fragments.length < 3 %>
-    <% uri = URI.parse(fragments[0]) %>
-    <% db_name = uri.path[1..-1] %>
-    <% config = {
-          'name' => 'nri-postgresql',
-          'env' => {
-            'USERNAME' => uri.user || 'default_user',
-            'PASSWORD' => uri.password || 'default_password',
-            'HOSTNAME' => uri.host || 'localhost',
-            'DATABASE' => db_name,
-            'PORT' => (uri.port || 5432).to_s,
-            'ENABLE_SSL' => 'true',
-            'TRUST_SERVER_CERTIFICATE' => 'true',
-            'COLLECTION_LIST' => "[\"#{db_name}\"]",
-            'CUSTOM_METRICS_CONFIG' => '/etc/newrelic-infra/integrations.d/postgresql-custom-query.yml'
-          },
-          'interval' => ENV['NEW_RELIC_COLLECTION_INTERVAL'] || '30s',
-          'labels' => {
-            'instance' => fragments[1],
-            'env' => fragments[2] || 'production',
-            'role' => 'postgresql'
-          },
-          'inventory_source' => 'config/postgresql'
-        } %>
-    <%= YAML.dump(config).gsub(/^/, '  ') %>
-  <% rescue => e %>
-    <% sanitized_entry = entry.gsub(/:\/\/.*@/, '://[REDACTED]@') %>
-    <% warn "Skipping invalid entry: #{sanitized_entry} (Error: #{e.message})" %>
-  <% end %>
+  <% fragments = entry.split('|') %>
+  <% uri = URI.parse(fragments[0]) %>
+  <% db_name = uri.path[1..-1] %>
+  - name: nri-postgresql
+    env:
+      USERNAME: <%= uri.user %>
+      PASSWORD: <%= uri.password %>
+      HOSTNAME: <%= uri.host %>
+      DATABASE: <%= db_name %>
+      PORT: "<%= uri.port %>"
+      ENABLE_SSL: "true"
+      TRUST_SERVER_CERTIFICATE: "true"
+      COLLECTION_LIST: '["<%= db_name %>"]'
+    interval: 15s
+    labels:
+      instance: => <%= fragments[1] %>
+      env: <%= fragments[2] || 'production' %>
+      role: postgresql
+    inventory_source: config/postgresql
 <% end %>
