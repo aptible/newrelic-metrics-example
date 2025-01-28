@@ -1,8 +1,9 @@
 <% require 'uri' %>
 integrations:
-<% psql_urls = ENV['PSQL_URLS'].split(',') %>
-<% psql_urls.each do |url| %>
-  <% uri = URI.parse(url) %>
+<% config_entries = ENV['PSQL_URLS'].split(',') %>
+<% config_entries.each do |entry| %>
+  <% fragments = entry.split('|') %>
+  <% uri = URI.parse(fragments[0]) %>
   - name: nri-postgresql
     env:
       USERNAME: <%= uri.user %>
@@ -13,8 +14,10 @@ integrations:
       ENABLE_SSL: "true"
       TRUST_SERVER_CERTIFICATE: "true"
       COLLECTION_LIST: '["<%= uri.path[1..-1] %>"]'
-    interval: 15s
+      CUSTOM_METRICS_CONFIG: /etc/newrelic-infra/integrations.d/postgresql-custom-query.yml
+    interval: <%= ENV['NEW_RELIC_COLLECTION_INTERVAL'] || 30s %>
     labels:
+      instance: <%= fragments[1] %>
       env: <%= ENV['NEW_RELIC_ENV_LABEL'] || 'production' %>
       role: postgresql
     inventory_source: config/postgresql
