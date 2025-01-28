@@ -3,5 +3,6 @@ set -e
 
 cd /usr/yml && erb newrelic-infra-template.yml.erb > /etc/newrelic-infra.yml
 cd /usr/yml && erb postgresql-config.yml.erb > /etc/newrelic-infra/integrations.d/postgresql-config.yml
+cd /usr/yml && erb postgresql-custom-query.yml.erb > /etc/newrelic-infra/integrations.d/postgresql-custom-query.yml
 
 exec /usr/bin/newrelic-infra-service "$@"

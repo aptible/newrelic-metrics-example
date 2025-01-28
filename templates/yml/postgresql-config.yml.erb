@@ -1,21 +1,24 @@
 <% require 'uri' %>
 integrations:
-<% psql_urls = ENV['PSQL_URLS'].split(',') %>
-<% psql_urls.each do |url| %>
-  <% uri = URI.parse(url) %>
+<% config_entries = ENV['PSQL_URLS'].to_s.split(',') %>
+<% config_entries.each do |entry| %>
+  <% fragments = entry.split('|') %>
+  <% uri = URI.parse(fragments[0]) %>
+  <% db_name = uri.path[1..-1] %>
   - name: nri-postgresql
     env:
       USERNAME: <%= uri.user %>
       PASSWORD: <%= uri.password %>
       HOSTNAME: <%= uri.host %>
-      DATABASE: <%= uri.path[1..-1] %>  <%# Remove the leading slash from the database name %>
+      DATABASE: <%= db_name %>
       PORT: "<%= uri.port %>"
       ENABLE_SSL: "true"
       TRUST_SERVER_CERTIFICATE: "true"
-      COLLECTION_LIST: '["<%= uri.path[1..-1] %>"]'
+      COLLECTION_LIST: '["<%= db_name %>"]'
     interval: 15s
     labels:
-      env: <%= ENV['NEW_RELIC_ENV_LABEL'] || 'production' %>
+      instance: => <%= fragments[1] %>
+      env: <%= fragments[2] || 'production' %>
       role: postgresql
     inventory_source: config/postgresql
 <% end %>
