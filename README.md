@@ -24,13 +24,13 @@ To configure the New Relic agent and database connections, set the following env
 
 * **Description**: A comma-delimited list of PostgreSQL database URLs in the format:
   ```
-  postgresql://USER:PASSWORD@HOST:PORT/DB_NAME
+  postgresql://USER:PASSWORD@HOST:PORT/DB_NAME|DATABASE_HANDLE|ENVIRONMENT_LABEL
   ```
   Multiple database URLs can be provided, separated by commas.
 
 * **Example**:
   ```
-  postgresql://user1:password1@db1.example.com:5432/database1,postgresql://user2:password2@db2.example.com:5432/database2
+  postgresql://user1:password1@db1.example.com:5432/database1|database-instance-1|test,postgresql://user2:password2@db2.example.com:5432/database2|database-instance-2|staging
   ```
 
 ## Local Usage
