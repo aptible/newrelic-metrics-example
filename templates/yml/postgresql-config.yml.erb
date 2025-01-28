@@ -15,6 +15,7 @@ integrations:
       ENABLE_SSL: "true"
       TRUST_SERVER_CERTIFICATE: "true"
       COLLECTION_LIST: '["<%= db_name %>"]'
+      CUSTOM_METRICS_CONFIG: "/etc/newrelic-infra/integrations.d/postgresql-custom-query.yml"
     interval: 15s
     labels:
       instance: => <%= fragments[1] %>
