@@ -15,6 +15,11 @@ To configure the New Relic agent and database connections, set the following env
 * **Description**: Your New Relic account's license key, required for reporting metrics to New Relic
 * **Example**: `1234567890abcdef1234567890abcdef12345678`
 
+### `NEW_RELIC_INTERVAL_SEC`
+
+* **Description**: Polling interval in seconds, defaulted to `30s`.
+* **Example**: `15s`
+
 ### `NEW_RELIC_EVENT_QUEUE_DEPTH`
 
 * **Description**: This is used to configure `event_queue_depth` which adjusts the size of the queue the Infrastructure agent uses to store events before sending them to New Relic. Default: 5000
