@@ -30,6 +30,8 @@
 #
 license_key: <%= ENV['NEW_RELIC_LICENSE_KEY'] %>
 
+event_queue_depth: <%= ENV['NEW_RELIC_EVENT_QUEUE_DEPTH'] || 5000 %>
+
 features:
   docker_enabled: false
 
