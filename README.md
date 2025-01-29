@@ -10,21 +10,21 @@ This repository contains an example setup for monitoring PostgreSQL metrics usin
 
 To configure the New Relic agent and database connections, set the following environment variables:
 
-### `NEW_RELIC_ENV_LABEL`
-
-* **Description**: Specifies the environment tag for your database metrics (e.g., `production`, `staging`)
-* **Example**: `production`
-
 ### `NEW_RELIC_LICENSE_KEY`
 
 * **Description**: Your New Relic account's license key, required for reporting metrics to New Relic
 * **Example**: `1234567890abcdef1234567890abcdef12345678`
 
+### `NEW_RELIC_EVENT_QUEUE_DEPTH`
+
+* **Description**: This is used to configure `event_queue_depth` which adjusts the size of the queue the Infrastructure agent uses to store events before sending them to New Relic. Default: 5000
+* **Example**: `10000`
+
 ### `PSQL_URLS`
 
 * **Description**: A comma-delimited list of PostgreSQL database URLs in the format:
   ```
-  postgresql://USER:PASSWORD@HOST:PORT/DB_NAME|DATABASE_HANDLE|ENVIRONMENT_LABEL
+  postgresql://USER:PASSWORD@HOST:PORT/DB_NAME|DATABASE_HANDLE|NEW_RELIC_ENV_LABEL
   ```
   Multiple database URLs can be provided, separated by commas.
 
@@ -32,6 +32,11 @@ To configure the New Relic agent and database connections, set the following env
   ```
   postgresql://user1:password1@db1.example.com:5432/database1|database-instance-1|test,postgresql://user2:password2@db2.example.com:5432/database2|database-instance-2|staging
   ```
+
+### `NEW_RELIC_LICENSE_KEY`
+
+* **Description**: Your New Relic account's license key, required for reporting metrics to New Relic
+* **Example**: `1234567890abcdef1234567890abcdef12345678`
 
 ## Local Usage
 
@@ -52,9 +57,8 @@ To configure the New Relic agent and database connections, set the following env
 
 4. Run the container with the required environment variables:
    ```bash
-   docker run -e NEW_RELIC_ENV_LABEL=production \
-              -e NEW_RELIC_LICENSE_KEY=1234567890abcdef1234567890abcdef12345678 \
-              -e PSQL_URLS="postgresql://user1:password1@db1.example.com:5432/database1,postgresql://user2:password2@db2.example.com:5432/database2" \
+   docker run -e NEW_RELIC_LICENSE_KEY=1234567890abcdef1234567890abcdef12345678 \
+              -e PSQL_URLS="postgresql://user1:password1@db1.example.com:5432/database1|database-instance-1|test,postgresql://user2:password2@db2.example.com:5432/database2|database-instance-2|staging" \
               newrelic-metrics-example
    ```
 
@@ -81,7 +85,6 @@ Follow these steps to deploy the New Relic metrics agent on Aptible:
 4. Configure the app environment, substituting your own values below:
    ```bash
    aptible config:set --app newrelic-metrics \
-     NEW_RELIC_ENV_LABEL=production \
      NEW_RELIC_LICENSE_KEY=your-license-key \
      PSQL_URLS=your-database-urls
    ```

@@ -14,8 +14,11 @@ integrations:
       PORT: "<%= uri.port %>"
       ENABLE_SSL: "true"
       TRUST_SERVER_CERTIFICATE: "true"
-      COLLECTION_LIST: '["<%= db_name %>"]'
-      CUSTOM_METRICS_CONFIG: "/etc/newrelic-infra/integrations.d/postgresql-custom-query.yml"
+      COLLECTION_LIST: 'ALL'
+      CUSTOM_METRICS_QUERY: >-
+        select count(*) as table_count
+          from information_schema.tables
+          where table_schema = 'public';
     interval: 15s
     labels:
       instance: => <%= fragments[1] %>
