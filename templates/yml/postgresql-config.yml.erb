@@ -19,7 +19,7 @@ integrations:
         select count(*) as table_count
           from information_schema.tables
           where table_schema = 'public';
-    interval: <%= ENV['NEW_RELIC_INTERVAL_SEC'] || 30s %>
+    interval: <%= ENV['NEW_RELIC_INTERVAL_SEC'] || '30s' %>
     labels:
       instance: => <%= fragments[1] %>
       env: <%= fragments[2] || 'production' %>
